@@ -1,0 +1,28 @@
+[
+  {
+    "step_id": "probe_host",
+    "description": "Probe host system architecture and Python runtime",
+    "tool_name": "system_probe",
+    "parameters": {},
+    "expected_output_pattern": "python_version"
+  },
+  {
+    "step_id": "compute_metric",
+    "description": "Perform verification arithmetic",
+    "tool_name": "calc",
+    "parameters": {"expression": "1024 * 16"},
+    "depends_on": ["probe_host"],
+    "expected_output_pattern": "^16384$"
+  },
+  {
+    "step_id": "persist_summary",
+    "description": "Write execution artifact to sandbox",
+    "tool_name": "file_write",
+    "parameters": {
+      "path": "summary.txt",
+      "content": "Host probe and verification metrics completed successfully."
+    },
+    "depends_on": ["compute_metric"],
+    "expected_output_pattern": "Wrote \\d+ bytes"
+  }
+]
